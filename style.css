@@ -9,17 +9,17 @@ html {
 }
 
 body {
+  margin: 0; /* Remove default margin */
   font-family: "Chewy", cursive;
   background-image: url("src/images/background.jpg"); /* Replace with your image path */
   background-size: cover; /* Cover the entire area */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent the image from repeating */
-  overflow-y: hidden; /* Prevent vertical scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling initially */
   display: flex; /* Use flexbox for centering */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   min-height: 100vh; /* Full height of the viewport */
-  margin: 0; /* Remove default margin */
   position: relative; /* Set position for overlay */
 }
 
@@ -58,6 +58,22 @@ body {
   font-size: 24px; /* Font size */
   text-align: center; /* Center text */
   cursor: pointer; /* Change cursor to pointer */
+}
+
+#progress-container {
+  width: 100%;
+  height: 3px; /* Height of the progress bar */ /* Background color of the progress container */
+  position: fixed; /* Fixes the position at the top */
+  top: 0; /* Aligns to the top of the page */
+  left: 0; /* Aligns to the left of the page */
+  z-index: 0; /* Ensures it stays above other content */
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0; /* Initial width */
+  background-color: #e9ade1; /* Color of the progress bar */ /* Rounded corners */
+  transition: width 0.1s; /* Smooth transition */
 }
 
 #sound-slider__container {
