@@ -23,6 +23,42 @@ const musicData = {
     },
     image: "https://i.scdn.co/image/ab67616d00001e02b56ada0ba61d7787fb213f72",
   },
+  kaze_ni_naru: {
+    src: "src/music/kaze_ni_naru.mp3",
+    song: {
+      name: "風になる",
+      url: "https://open.spotify.com/track/1BMYkyKXS6UfnJteWN7nSD",
+    },
+    author: {
+      name: "Tsuji Ayano",
+      url: "https://open.spotify.com/artist/73kAoAaI4yjMeHuLwpsL4i",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e029385cab000124c1c28004e1d",
+  },
+  luna_say_maybe: {
+    src: "src/music/luna_say_maybe.mp3",
+    song: {
+      name: "Luna Say Maybe",
+      url: "https://open.spotify.com/track/3KWXtICkXcWYxGCtoEWRnn",
+    },
+    author: {
+      name: "初星学園",
+      url: "https://open.spotify.com/artist/4C9binD0PqNg8nLD93FQpr",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e02edb05625dc040ccef179728a",
+  },
+  about_you: {
+    src: "src/music/about_you.mp3",
+    song: {
+      name: "About You",
+      url: "https://open.spotify.com/track/05T6kBhvKlT8wihugMB6qZ",
+    },
+    author: {
+      name: "ロクデナシ",
+      url: "https://open.spotify.com/artist/4kpQdAU7yPjqtiJsFcBTBb",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e0230e170348c2f874483863662",
+  },
 };
 
 const musicKeys = Object.keys(musicData);
@@ -136,4 +172,74 @@ previousButton.addEventListener("click", () => {
 nextButton.addEventListener("click", () => {
   currentSongIndex = (currentSongIndex + 1) % musicKeys.length;
   playMusic();
+});
+
+const songItemsContainer = document.getElementById("songItems");
+const songListContainer = document.querySelector(".song-list");
+const iconContainer = document.querySelector(".icon-container");
+
+function createSongList() {
+  musicKeys.forEach((key) => {
+    const song = musicData[key];
+    const songItem = document.createElement("div");
+    songItem.className = "song-item";
+    songItem.innerHTML = `
+      <img src="${song.image}" alt="${song.song.name} cover" class="song-image">
+      <p>${song.song.name} - ${song.author.name}</p>
+    `;
+
+    // Add click event to play the song
+    songItem.addEventListener("click", () => {
+      currentSongIndex = musicKeys.indexOf(key); // Set the current song index
+      playMusic(); // Play the selected song
+    });
+
+    songItemsContainer.appendChild(songItem);
+  });
+}
+
+// Call the function to create the song list
+createSongList();
+
+// Event listeners for showing/hiding the icon and loading song items
+songListContainer.addEventListener("mouseenter", () => {
+  iconContainer.style.display = "none"; // Hide icon when expanded
+  // Load song items after a slight delay
+  setTimeout(() => {
+    songItemsContainer.style.opacity = "1"; // Fade in song items
+  }, 300); // Adjust the delay as needed
+});
+
+songListContainer.addEventListener("mouseleave", () => {
+  songItemsContainer.style.opacity = "0"; // Fade out song items
+  setTimeout(() => {
+    iconContainer.style.display = "block"; // Show icon when contracted
+  }, 400); // Adjust the delay as needed
+});
+
+const songItems = document.querySelectorAll(".song-item");
+
+// Add hover event listeners to each song item
+songItems.forEach((item, index) => {
+  item.addEventListener("mouseenter", () => {
+    // Scale down the previous item if it exists
+    if (index > 0) {
+      songItems[index - 1].classList.add("scale-down");
+    }
+    // Scale down the next item if it exists
+    if (index < songItems.length - 1) {
+      songItems[index + 1].classList.add("scale-down");
+    }
+  });
+
+  item.addEventListener("mouseleave", () => {
+    // Remove the scale-down class from the previous item
+    if (index > 0) {
+      songItems[index - 1].classList.remove("scale-down");
+    }
+    // Remove the scale-down class from the next item
+    if (index < songItems.length - 1) {
+      songItems[index + 1].classList.remove("scale-down");
+    }
+  });
 });

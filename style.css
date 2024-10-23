@@ -6,6 +6,8 @@
 
 html {
   height: 100%;
+  cursor: pointer; /* Change cursor to pointer for the entire item */
+  user-select: none; /* Prevent text selection */
 }
 
 .fade-in {
@@ -247,7 +249,7 @@ body {
   width: 100%; /* Full-width music box */
   max-width: 600px; /* Set a maximum width for larger screens */
   padding: 10px 20px;
-  z-index: 1000;
+  z-index: 0;
   backdrop-filter: blur(10px); /* Glass effect */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for glass effect */
 }
@@ -268,7 +270,7 @@ body {
 }
 
 #song-info p {
-  margin: 5px 0;
+  margin: 3px 0;
   font-size: 14px;
   text-align: left;
 }
@@ -298,4 +300,95 @@ body {
 
 #musicBox a:hover {
   color: #1db954; /* Change color on hover (e.g., Spotify Green) */
+}
+
+/* Main container for the song list */
+.song-list {
+  width: 60px; /* Initial width */
+  height: 60px; /* Initial height */
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Glass effect */
+  border-radius: 10px; /* Rounded corners */
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  margin: 5px; /* Margin around the container */
+  position: fixed; /* Fixed position */
+  bottom: 5px; /* Align to bottom */
+  left: 0; /* Align to left */
+  z-index: 0; /* Layering */
+  overflow: hidden; /* Hide overflow */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for glass effect */
+}
+
+/* Hover effect for expanding the song list */
+.song-list:hover {
+  height: 60%; /* Expand height on hover */
+  width: 15%; /* Expand width on hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+}
+
+/* Container for song items */
+.song-items {
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease; /* Fade transition for opacity */
+  max-height: 80%; /* Limit height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px; /* Padding around the list */
+}
+
+/* Show song items on hover */
+.song-list:hover .song-items {
+  opacity: 1; /* Fade in song items on hover */
+}
+
+/* Individual song item styling */
+.song-item {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center items vertically */
+  background: rgba(255, 255, 255, 0.1); /* Background for song items */
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px; /* Padding for song items */
+  margin: 5px 0; /* Space between items */
+  cursor: pointer; /* Pointer cursor for clickable items */
+  transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition for transform and background */
+}
+
+/* Highlight song item on hover */
+.song-item:hover {
+  transform: scale(1.05); /* Scale up on hover */
+}
+
+/* Scale down adjacent items */
+.song-item.scale-down {
+  transform: scale(0.95); /* Scale down adjacent items */
+}
+
+/* Image styling for song cover */
+.song-image {
+  width: 40px; /* Fixed width for the image */
+  height: 40px; /* Fixed height for the image */
+  border-radius: 5px; /* Rounded corners for the image */
+  margin-right: 10px; /* Space between the image and text */
+}
+
+/* Text styling for song item */
+.song-item p {
+  margin: 0; /* Remove default margin */
+  color: white; /* Text color */
+  user-select: none; /* Prevent text selection */
+}
+
+/* Icon container styling */
+.icon-container {
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+/* Fade out icon when hovered */
+.song-list:hover .icon-container {
+  opacity: 0; /* Fade out icon */
+}
+
+/* Fade in icon when not hovered */
+.song-list:not(:hover) .icon-container {
+  opacity: 1; /* Fade in icon */
 }
