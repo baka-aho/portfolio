@@ -1,46 +1,108 @@
-const musicFiles = ["src/music/shout_baby.mp3", "src/music/daydream.mp3"]; // Your music files
+const musicData = {
+  shout_baby: {
+    src: "src/music/shout_baby.mp3",
+    song: {
+      name: "Shout Baby",
+      url: "https://open.spotify.com/track/5K1m4aaPCxwnm9SKlWW1vh",
+    },
+    author: {
+      name: "Ryokuoushoku Shakai",
+      url: "https://open.spotify.com/artist/4SJ7qRgJYNXB9Yttzs4aSa",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e02323b6ecc2a6e0f2410a1956a",
+  },
+  daydream: {
+    src: "src/music/daydream.mp3",
+    song: {
+      name: "蝶々結び",
+      url: "https://open.spotify.com/track/3HxJaKzob7tdcr4qmqfR1d",
+    },
+    author: {
+      name: "Aimer",
+      url: "https://open.spotify.com/artist/0bAsR2unSRpn6BQPEnNlZm",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e02b56ada0ba61d7787fb213f72",
+  },
+};
+
+const musicKeys = Object.keys(musicData);
 const audioPlayer = document.getElementById("audioPlayer");
 const slider = document.getElementById("sound-slider");
 const volumeDisplay = document.getElementById("volume");
 const loadingScreen = document.getElementById("loadingScreen");
 const progressBar = document.getElementById("progress-bar");
+const songImageElement = document.getElementById("song-image");
+const songTitleElement = document.getElementById("song-title");
+const artistNameElement = document.getElementById("artist-name");
+const songLinkElement = document.getElementById("song-link");
+const artistLinkElement = document.getElementById("artist-link");
+const playPauseButton = document.getElementById("playPauseButton");
+const previousButton = document.getElementById("previousButton");
+const nextButton = document.getElementById("nextButton");
 
-let currentSongIndex = -1; // Initialize current song index
+let currentSongIndex = -1;
+let isPlaying = false;
 
 function getRandomMusicFile() {
-  const randomIndex = Math.floor(Math.random() * musicFiles.length);
-  return randomIndex; // Return the random index instead of the file
+  return Math.floor(Math.random() * musicKeys.length);
 }
 
-// Function to play music
+function updateMusicBox(musicKey) {
+  const currentMusic = musicData[musicKey];
+  songImageElement.src = currentMusic.image;
+  songTitleElement.textContent = currentMusic.song.name;
+  songLinkElement.href = currentMusic.song.url;
+  artistNameElement.textContent = currentMusic.author.name;
+  artistLinkElement.href = currentMusic.author.url;
+}
+
 function playMusic() {
-  currentSongIndex = getRandomMusicFile(); // Get a random song index
-  audioPlayer.src = musicFiles[currentSongIndex]; // Set the audio source
-  audioPlayer.volume = slider.value / 100; // Set initial volume from the slider (0-100)
+  const musicKey = musicKeys[currentSongIndex];
+  const currentMusic = musicData[musicKey];
+  audioPlayer.src = currentMusic.src;
+  audioPlayer.volume = slider.value / 100;
+  updateMusicBox(musicKey);
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
   });
+  isPlaying = true;
+  updatePlayPauseButton();
 }
 
-// Function to handle loading overlay click
+function togglePlayPause() {
+  if (isPlaying) {
+    audioPlayer.pause();
+  } else {
+    audioPlayer.play().catch((error) => {
+      console.error("Error playing music:", error);
+    });
+  }
+  isPlaying = !isPlaying;
+  updatePlayPauseButton();
+}
+
+function updatePlayPauseButton() {
+  playPauseButton.innerHTML = isPlaying ? "&#10074;&#10074;" : "&#9654;"; // Pause or Play icon
+}
+
 loadingScreen.addEventListener("click", () => {
-  loadingScreen.style.opacity = "0"; // Start fade out
-  document.body.style.overflow = "hidden"; // Prevent background scrolling
+  loadingScreen.style.opacity = "0";
   setTimeout(() => {
-    loadingScreen.style.display = "none"; // Hide after fade out
-    document.body.style.overflow = ""; // Re-enable scrolling
-  }, 1000); // Match this duration with the CSS transition duration
-  playMusic(); // Play music after user clicks
+    loadingScreen.style.display = "none";
+    const mainContent = document.getElementById("mainContent");
+    mainContent.classList.add("visible");
+    currentSongIndex = getRandomMusicFile();
+    playMusic();
+  }, 500);
 });
-// Function to handle volume changes
+
 function handleVolumeChange() {
   const volumeValue = slider.value;
-  audioPlayer.volume = volumeValue / 100; // Convert to a 0-1 range
-  volumeDisplay.innerHTML = volumeValue; // Update the displayed volume
-  updateAnimation(volumeValue); // Update animation based on volume
+  audioPlayer.volume = volumeValue / 100;
+  volumeDisplay.innerHTML = volumeValue;
+  updateAnimation(volumeValue);
 }
 
-// Function to update animation based on volume
 function updateAnimation(volumeValue) {
   const percentage = (volumeValue / slider.max) * 100;
   document
@@ -48,24 +110,30 @@ function updateAnimation(volumeValue) {
     .style.setProperty("--percentage", `${percentage}%`);
 }
 
-// Set up event listener for the sound slider
 slider.addEventListener("input", handleVolumeChange);
 
-// Initialize the volume display
-handleVolumeChange(); // Set initial display value
+handleVolumeChange();
 
-// Event listener for when the song ends
 audioPlayer.addEventListener("ended", () => {
-  currentSongIndex = (currentSongIndex + 1) % musicFiles.length; // Loop back to 0 if at the end
-  audioPlayer.src = musicFiles[currentSongIndex]; // Set the next song
-  audioPlayer.play().catch((error) => {
-    console.error("Error playing next music:", error);
-  });
+  currentSongIndex = (currentSongIndex + 1) % musicKeys.length;
+  playMusic();
 });
 
-// Update progress bar as the song plays
 audioPlayer.addEventListener("timeupdate", () => {
   const progressPercentage =
     (audioPlayer.currentTime / audioPlayer.duration) * 100;
-  progressBar.style.width = `${progressPercentage}%`; // Update the width of the progress bar
+  progressBar.style.width = `${progressPercentage}%`;
+});
+
+playPauseButton.addEventListener("click", togglePlayPause);
+
+previousButton.addEventListener("click", () => {
+  currentSongIndex =
+    (currentSongIndex - 1 + musicKeys.length) % musicKeys.length;
+  playMusic();
+});
+
+nextButton.addEventListener("click", () => {
+  currentSongIndex = (currentSongIndex + 1) % musicKeys.length;
+  playMusic();
 });

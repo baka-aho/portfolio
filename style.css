@@ -8,88 +8,92 @@ html {
   height: 100%;
 }
 
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease; /* Adjust the duration as needed */
+}
+
+.fade-in.visible {
+  opacity: 1; /* Fully visible */
+}
+
 body {
-  margin: 0; /* Remove default margin */
+  margin: 0;
   font-family: "Chewy", cursive;
-  background-image: url("src/images/background.jpg"); /* Replace with your image path */
-  background-size: cover; /* Cover the entire area */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  overflow-y: hidden; /* Prevent vertical scrolling initially */
-  display: flex; /* Use flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  min-height: 100vh; /* Full height of the viewport */
-  position: relative; /* Set position for overlay */
+  background-image: url("src/images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
 }
 
 .overlay {
-  position: absolute; /* Position it absolutely */
-  top: 0; /* Align to the top */
-  left: 0; /* Align to the left */
-  right: 0; /* Stretch to the right */
-  bottom: 0; /* Stretch to the bottom */
-  background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
-  z-index: 0; /* Set a lower z-index to allow interaction with content */
-}
-
-.loading-screen {
-  position: fixed; /* Cover the entire viewport */
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.8
-  ); /* Dark background for the loading screen */
-  display: flex; /* Center content */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  z-index: 100; /* Ensure it appears above other content */
-  opacity: 1; /* Fully visible */
-  transition: opacity 1s ease; /* Transition for opacity */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 1s ease;
 }
 
 .loading-message {
-  color: white; /* Text color */
-  font-size: 24px; /* Font size */
-  text-align: center; /* Center text */
-  cursor: pointer; /* Change cursor to pointer */
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
 }
 
 #progress-container {
   width: 100%;
-  height: 3px; /* Height of the progress bar */ /* Background color of the progress container */
-  position: fixed; /* Fixes the position at the top */
-  top: 0; /* Aligns to the top of the page */
-  left: 0; /* Aligns to the left of the page */
-  z-index: 0; /* Ensures it stays above other content */
+  height: 3px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 #progress-bar {
   height: 100%;
-  width: 0; /* Initial width */
-  background-color: #e9ade1; /* Color of the progress bar */ /* Rounded corners */
-  transition: width 0.1s; /* Smooth transition */
+  width: 0;
+  background-color: #e9ade1;
+  transition: width 0.1s;
 }
 
 #sound-slider__container {
   display: flex;
-  width: 300px; /* Adjust width as needed */
-  height: 20px; /* Adjust height as needed */
+  width: 300px;
+  height: 20px;
   padding: 10px 20px;
   background: rgba(var(--main-color), 0.07);
   border: 1px solid rgba(var(--main-color), 0.03);
   border-radius: 1in;
   align-items: center;
   justify-content: center;
-  position: fixed; /* Fixed positioning */
-  top: 20px; /* Distance from the bottom */
-  right: 20px; /* Distance from the right */
-  z-index: 10; /* Ensure it appears above other elements */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
 #sound-slider__container::after {
@@ -139,7 +143,6 @@ body {
   overflow: hidden;
 }
 
-/* round the volume progress */
 #sound-slider::after {
   position: absolute;
   content: "";
@@ -167,4 +170,132 @@ body {
   color: rgb(var(--el-bg-color));
   min-width: 2em;
   text-align: right;
+}
+
+.glass-box {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Transparent background for glass effect */
+  border-radius: 15px;
+  padding: 40px; /* Increased padding for more space */
+  width: 600px; /* Set a larger width */
+  height: 400px; /* Set a larger height */
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
+  backdrop-filter: blur(10px); /* Glass effect */
+  color: white; /* Text color */
+  text-align: center; /* Center text */
+  z-index: 0; /* Ensure it appears above other elements */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for glass effect */
+}
+
+.glass-box h2 {
+  font-size: 40px;
+  margin: 0 0 10px;
+}
+
+.glass-box p {
+  margin: 0;
+}
+
+/* Profile Picture Glow and Growth Effect */
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  transition: transform 0.4s ease;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Glow and Growth effect on hover */
+.profile-picture:hover {
+  transform: scale(1.1);
+}
+
+/* Music box positioned slightly above the bottom of the page with glass effect */
+#musicBox {
+  margin: 5px;
+  position: fixed;
+  bottom: 5px; /* 5px above the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Transparent background for glass effect */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
+  border-radius: 15px; /* Rounded corners */
+  width: 100%; /* Full-width music box */
+  max-width: 600px; /* Set a maximum width for larger screens */
+  padding: 10px 20px;
+  z-index: 1000;
+  backdrop-filter: blur(10px); /* Glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for glass effect */
+}
+
+/* Song image styling */
+#song-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+#song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1; /* Take up remaining space between image and controls */
+}
+
+#song-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  text-align: left;
+}
+
+#player-controls {
+  display: flex;
+  align-items: center;
+}
+
+#player-controls button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+#player-controls button:hover {
+  color: #1db954; /* Spotify Green */
+}
+
+#musicBox a {
+  text-decoration: none; /* Remove underline */
+  color: #fff; /* Set the text color to white or your desired color */
+}
+
+#musicBox a:hover {
+  color: #1db954; /* Change color on hover (e.g., Spotify Green) */
 }
