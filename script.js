@@ -59,6 +59,18 @@ const musicData = {
     },
     image: "https://i.scdn.co/image/ab67616d00001e0230e170348c2f874483863662",
   },
+  glbp: {
+    src: "src/music/glbp.mp3",
+    song: {
+      name: "ギターと孤独と蒼い惑星",
+      url: "https://open.spotify.com/track/17rhDgnYYryQU4uS71ZxFu",
+    },
+    author: {
+      name: "kessoku band",
+      url: "https://open.spotify.com/artist/2nvl0N9GwyX69RRBMEZ4OD",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e02255ca949e450cb675edf715d",
+  },
 };
 
 const musicKeys = Object.keys(musicData);
@@ -242,4 +254,107 @@ songItems.forEach((item, index) => {
       songItems[index + 1].classList.remove("scale-down");
     }
   });
+});
+
+const audioVisualizer = document.getElementById("audioVisualizer");
+const canvasContext = audioVisualizer.getContext("2d");
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+const source = audioContext.createMediaElementSource(audioPlayer);
+source.connect(analyser);
+analyser.connect(audioContext.destination);
+analyser.fftSize = 512; // Increase the FFT size for more bars
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// Function to draw a rounded rectangle with only the top corners rounded
+function drawRoundedRectTop(x, y, width, height, radius) {
+  canvasContext.beginPath();
+  canvasContext.moveTo(x + radius, y); // Move to the top-left corner
+  canvasContext.lineTo(x + width - radius, y); // Top edge
+  canvasContext.quadraticCurveTo(x + width, y, x + width, y + radius); // Top-right corner
+  canvasContext.lineTo(x + width, y + height); // Right edge
+  canvasContext.lineTo(x, y + height); // Bottom edge
+  canvasContext.lineTo(x, y + radius); // Left edge
+  canvasContext.quadraticCurveTo(x, y, x + radius, y); // Top-left corner
+  canvasContext.closePath();
+  canvasContext.fill();
+}
+
+function drawVisualizer() {
+  requestAnimationFrame(drawVisualizer);
+  analyser.getByteFrequencyData(dataArray);
+
+  // Clear the canvas with a transparent background
+  canvasContext.clearRect(0, 0, audioVisualizer.width, audioVisualizer.height);
+
+  const barWidth = (audioVisualizer.width / bufferLength) * 1.7; // Adjusted width for more bars
+  let barHeight;
+  let x = 0;
+  const radius = 4.5; // Radius for rounded corners
+
+  for (let i = 0; i < bufferLength; i++) {
+    // Scale the bar height based on the frequency data
+    barHeight = (dataArray[i] / 255) * (audioVisualizer.height - 20); // Scale to fit the canvas
+
+    // Create a linear gradient for the bar
+    const gradient = canvasContext.createLinearGradient(
+      x,
+      audioVisualizer.height - barHeight,
+      x,
+      audioVisualizer.height
+    );
+
+    const color1 = "#ffffff"; // Start color
+    const color2 = "#ffffff"; // End color
+
+    // Calculate the color stop positions
+    const r = parseInt(color1.slice(1, 3), 16);
+    const g = parseInt(color1.slice(3, 5), 16);
+    const b = parseInt(color1.slice(5, 7), 16);
+
+    // Calculate the opacity based on a sine wave for smooth blending
+    const lowOpacity = 0.2; // Low opacity
+    const highOpacity = 0.8; // High opacity
+
+    // Calculate the normalized position of the bar
+    const normalizedIndex = i / (bufferLength - 1); // Normalize to [0, 1]
+
+    // Use a sine function to create a smooth transition
+    const opacity =
+      lowOpacity +
+      (highOpacity - lowOpacity) *
+        Math.abs(Math.sin(normalizedIndex * Math.PI)); // Smooth transition
+
+    // Set the gradient colors
+    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${opacity - 0.3})`); // Color at the bottom
+    gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, ${opacity - 0.3})`); // Color at the top
+
+    // Set the fill style to the gradient
+    canvasContext.fillStyle = gradient;
+
+    // Draw the rounded bar with only the top corners rounded
+    drawRoundedRectTop(
+      x,
+      audioVisualizer.height - barHeight,
+      barWidth,
+      barHeight,
+      radius
+    );
+
+    x += barWidth + 1; // Move to the next bar
+  }
+}
+
+// Start the visualizer when the music starts playing
+audioPlayer.addEventListener("play", () => {
+  audioContext.resume().then(() => {
+    drawVisualizer();
+  });
+});
+
+// Resize the canvas to fit the window
+window.addEventListener("resize", () => {
+  audioVisualizer.width = window.innerWidth;
+  audioVisualizer.height = window.innerHeight;
 });

@@ -84,7 +84,7 @@ body {
 
 #sound-slider__container {
   display: flex;
-  width: 300px;
+  width: 270px;
   height: 20px;
   padding: 10px 20px;
   background: rgba(var(--main-color), 0.07);
@@ -247,7 +247,7 @@ body {
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
   border-radius: 15px; /* Rounded corners */
   width: 100%; /* Full-width music box */
-  max-width: 600px; /* Set a maximum width for larger screens */
+  max-width: 30%; /* Set a maximum width for larger screens */
   padding: 10px 20px;
   z-index: 0;
   backdrop-filter: blur(10px); /* Glass effect */
@@ -276,7 +276,7 @@ body {
 }
 
 #player-controls {
-  display: flex;
+  display: fixed;
   align-items: center;
 }
 
@@ -321,8 +321,8 @@ body {
 
 /* Hover effect for expanding the song list */
 .song-list:hover {
-  height: 60%; /* Expand height on hover */
-  width: 15%; /* Expand width on hover */
+  height: 650px; /* Expand height on hover */
+  width: 300px; /* Expand width on hover */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow for depth */
 }
 
@@ -355,6 +355,7 @@ body {
 /* Highlight song item on hover */
 .song-item:hover {
   transform: scale(1.05); /* Scale up on hover */
+  background: rgba(255, 255, 255, 0.4); /* Background for song items */
 }
 
 /* Scale down adjacent items */
@@ -391,4 +392,15 @@ body {
 /* Fade in icon when not hovered */
 .song-list:not(:hover) .icon-container {
   opacity: 1; /* Fade in icon */
+}
+
+#audioVisualizer {
+  display: block;
+  width: 100%; /* Full width */
+  height: 150px; /* Set a fixed height */
+  background: transparent; /* Transparent background */
+  position: fixed; /* Fixed position */
+  bottom: 0; /* Align to the bottom */
+  left: 0; /* Align to the left */
+  z-index: 0; /* Ensure it appears above other elements */
 }
