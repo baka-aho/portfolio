@@ -268,15 +268,15 @@ const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
 // Function to draw a rounded rectangle with only the top corners rounded
-function drawRoundedRectTop(x, y, width, height, radius) {
+function drawRoundedRectTop(x, y, width, height) {
   canvasContext.beginPath();
-  canvasContext.moveTo(x + radius, y); // Move to the top-left corner
-  canvasContext.lineTo(x + width - radius, y); // Top edge
-  canvasContext.quadraticCurveTo(x + width, y, x + width, y + radius); // Top-right corner
+  canvasContext.moveTo(x, y); // Move to the top-left corner
+  canvasContext.lineTo(x + width, y); // Top edge
+  canvasContext.quadraticCurveTo(x + width, y, x + width, y); // Top-right corner
   canvasContext.lineTo(x + width, y + height); // Right edge
   canvasContext.lineTo(x, y + height); // Bottom edge
-  canvasContext.lineTo(x, y + radius); // Left edge
-  canvasContext.quadraticCurveTo(x, y, x + radius, y); // Top-left corner
+  canvasContext.lineTo(x, y); // Left edge
+  canvasContext.quadraticCurveTo(x, y, x, y); // Top-left corner
   canvasContext.closePath();
   canvasContext.fill();
 }
@@ -291,7 +291,6 @@ function drawVisualizer() {
   const barWidth = (audioVisualizer.width / bufferLength) * 1.7; // Adjusted width for more bars
   let barHeight;
   let x = 0;
-  const radius = 4.5; // Radius for rounded corners
 
   for (let i = 0; i < bufferLength; i++) {
     // Scale the bar height based on the frequency data
@@ -333,13 +332,11 @@ function drawVisualizer() {
     // Set the fill style to the gradient
     canvasContext.fillStyle = gradient;
 
-    // Draw the rounded bar with only the top corners rounded
     drawRoundedRectTop(
       x,
       audioVisualizer.height - barHeight,
       barWidth,
-      barHeight,
-      radius
+      barHeight
     );
 
     x += barWidth + 1; // Move to the next bar

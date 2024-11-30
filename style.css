@@ -40,7 +40,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 0;
 }
 
@@ -175,10 +175,8 @@ body {
 }
 
 .glass-box {
-  position: fixed;
-  top: 40%;
-  left: 50%;
   transform: translate(-50%, -50%);
+  position: fixed;
   background: rgba(
     255,
     255,
@@ -187,8 +185,6 @@ body {
   ); /* Transparent background for glass effect */
   border-radius: 15px;
   padding: 40px; /* Increased padding for more space */
-  width: 600px; /* Set a larger width */
-  height: 400px; /* Set a larger height */
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
   backdrop-filter: blur(10px); /* Glass effect */
   color: white; /* Text color */
@@ -231,9 +227,6 @@ body {
 #musicBox {
   margin: 5px;
   position: fixed;
-  bottom: 5px; /* 5px above the bottom */
-  left: 50%;
-  transform: translateX(-50%);
   background: rgba(
     255,
     255,
@@ -246,8 +239,6 @@ body {
   justify-content: space-between;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
   border-radius: 15px; /* Rounded corners */
-  width: 100%; /* Full-width music box */
-  max-width: 30%; /* Set a maximum width for larger screens */
   padding: 10px 20px;
   z-index: 0;
   backdrop-filter: blur(10px); /* Glass effect */
@@ -304,16 +295,13 @@ body {
 
 /* Main container for the song list */
 .song-list {
-  width: 60px; /* Initial width */
-  height: 60px; /* Initial height */
   background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
   backdrop-filter: blur(10px); /* Glass effect */
   border-radius: 10px; /* Rounded corners */
   transition: all 0.3s ease; /* Smooth transition for all properties */
   margin: 5px; /* Margin around the container */
   position: fixed; /* Fixed position */
-  bottom: 5px; /* Align to bottom */
-  left: 0; /* Align to left */
+  left: 0;
   z-index: 0; /* Layering */
   overflow: hidden; /* Hide overflow */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for glass effect */
@@ -403,4 +391,63 @@ body {
   bottom: 0; /* Align to the bottom */
   left: 0; /* Align to the left */
   z-index: 0; /* Ensure it appears above other elements */
+}
+
+/* Media Queries for Responsive Design */
+@media (orientation: portrait) {
+  #sound-slider__container {
+    width: 30%;
+    height: 20px;
+  }
+
+  .glass-box {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    width: 80%; /* Set a larger width */
+    height: 40%; /* Set a larger height */
+  }
+
+  #musicBox {
+    bottom: 5px; /* 5px above the bottom */
+    left: 0;
+    width: 90%; /* Full-width music box */
+  }
+
+  .song-list {
+    width: 40px; /* Initial width */
+    height: 40px; /* Initial height */
+    bottom: 12%; /* Align to bottom */
+  }
+
+  /* Hover effect for expanding the song list */
+  .song-list:hover {
+    height: 72%; /* Expand height on hover */
+    width: 55%; /* Expand width on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+  }
+}
+
+@media (orientation: landscape) {
+  .glass-box {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32%; /* Set a larger width */
+    height: 40%; /* Set a larger height */
+  }
+
+  #musicBox {
+    transform: translateX(-50%);
+    bottom: 5px; /* 5px above the bottom */
+    left: 50%;
+    width: 30%; /* Full-width music box */
+  }
+
+  /* Main container for the song list */
+  .song-list {
+    width: 60px; /* Initial width */
+    height: 60px; /* Initial height */
+    bottom: 5px; /* Align to bottom */
+  }
 }
