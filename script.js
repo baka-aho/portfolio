@@ -11,53 +11,17 @@ const musicData = {
     },
     image: "https://i.scdn.co/image/ab67616d00001e02323b6ecc2a6e0f2410a1956a",
   },
-  daydream: {
-    src: "src/music/daydream.mp3",
+  scream: {
+    src: "src/music/scream.mp3",
     song: {
-      name: "蝶々結び",
-      url: "https://open.spotify.com/track/3HxJaKzob7tdcr4qmqfR1d",
+      name: "すくりぃむ！",
+      url: "https://open.spotify.com/track/7HkNdAaxSeDBxibDxJID0Q",
     },
     author: {
-      name: "Aimer",
-      url: "https://open.spotify.com/artist/0bAsR2unSRpn6BQPEnNlZm",
+      name: "P丸様｡",
+      url: "https://open.spotify.com/artist/4hUWwJ0fRLx9rYtUvT26Ii",
     },
-    image: "https://i.scdn.co/image/ab67616d00001e02b56ada0ba61d7787fb213f72",
-  },
-  kaze_ni_naru: {
-    src: "src/music/kaze_ni_naru.mp3",
-    song: {
-      name: "風になる",
-      url: "https://open.spotify.com/track/1BMYkyKXS6UfnJteWN7nSD",
-    },
-    author: {
-      name: "Tsuji Ayano",
-      url: "https://open.spotify.com/artist/73kAoAaI4yjMeHuLwpsL4i",
-    },
-    image: "https://i.scdn.co/image/ab67616d00001e029385cab000124c1c28004e1d",
-  },
-  luna_say_maybe: {
-    src: "src/music/luna_say_maybe.mp3",
-    song: {
-      name: "Luna Say Maybe",
-      url: "https://open.spotify.com/track/3KWXtICkXcWYxGCtoEWRnn",
-    },
-    author: {
-      name: "初星学園",
-      url: "https://open.spotify.com/artist/4C9binD0PqNg8nLD93FQpr",
-    },
-    image: "https://i.scdn.co/image/ab67616d00001e02edb05625dc040ccef179728a",
-  },
-  about_you: {
-    src: "src/music/about_you.mp3",
-    song: {
-      name: "About You",
-      url: "https://open.spotify.com/track/05T6kBhvKlT8wihugMB6qZ",
-    },
-    author: {
-      name: "ロクデナシ",
-      url: "https://open.spotify.com/artist/4kpQdAU7yPjqtiJsFcBTBb",
-    },
-    image: "https://i.scdn.co/image/ab67616d00001e0230e170348c2f874483863662",
+    image: "https://i.scdn.co/image/ab67616d00004851fdb65c78f71172b6bfab977f",
   },
   glbp: {
     src: "src/music/glbp.mp3",
@@ -75,6 +39,7 @@ const musicData = {
 
 const musicKeys = Object.keys(musicData);
 const audioPlayer = document.getElementById("audioPlayer");
+const lyricsContentElement = document.getElementById("lyrics-content");
 const slider = document.getElementById("sound-slider");
 const volumeDisplay = document.getElementById("volume");
 const loadingScreen = document.getElementById("loadingScreen");
@@ -87,6 +52,24 @@ const artistLinkElement = document.getElementById("artist-link");
 const playPauseButton = document.getElementById("playPauseButton");
 const previousButton = document.getElementById("previousButton");
 const nextButton = document.getElementById("nextButton");
+
+function loadLyrics(musicKey) {
+  fetch(`src/lyrics/romaji/${musicKey}.txt`) // Ensure the file name matches the music key
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text(); // Read the response as text
+    })
+    .then((data) => {
+      // Replace newline characters with <br> for HTML rendering
+      const formattedLyrics = data.replace(/\n/g, "<br>");
+      lyricsContentElement.innerHTML = formattedLyrics; // Update the span with the formatted lyrics
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
 
 let currentSongIndex = -1;
 let isPlaying = false;
@@ -110,6 +93,7 @@ function playMusic() {
   audioPlayer.src = currentMusic.src;
   audioPlayer.volume = slider.value / 100;
   updateMusicBox(musicKey);
+  loadLyrics(musicKey);
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
   });
