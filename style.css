@@ -504,3 +504,41 @@ body {
     width: 23%; /* Expanded width on hover */
   }
 }
+
+@media (max-width: 1360px) and (max-height: 1024px) {
+  /* Styles specific to mobile devices */
+  #sound-slider__container {
+    width: 10%;
+  }
+
+  .profile-picture {
+    width: 60px;
+    height: 60px;
+  }
+
+  #musicBox {
+    width: 55%; /* Full-width music box */
+    height: 8%;
+  }
+
+  .song-list {
+    width: 40px; /* Initial width */
+    height: 40px; /* Initial height */
+    bottom: 12%; /* Align to bottom */
+  }
+
+  /* Hover effect for expanding the song list */
+  .song-list:hover {
+    height: 72%; /* Expand height on hover */
+    width: 55%; /* Expand width on hover */
+  }
+
+  #song-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lyrics-box:hover {
+    width: 65%; /* Expanded width on hover */
+  }
+}
