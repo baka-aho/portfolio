@@ -1,6 +1,6 @@
 const musicData = {
   shout_baby: {
-    src: "../../src/music/shout_baby.mp3",
+    src: "src/music/shout_baby.mp3",
     song: {
       name: "Shout Baby",
       url: "https://open.spotify.com/track/5K1m4aaPCxwnm9SKlWW1vh",
@@ -12,7 +12,7 @@ const musicData = {
     image: "https://i.scdn.co/image/ab67616d00001e02323b6ecc2a6e0f2410a1956a",
   },
   scream: {
-    src: "../../src/music/scream.mp3",
+    src: "src/music/scream.mp3",
     song: {
       name: "すくりぃむ！",
       url: "https://open.spotify.com/track/7HkNdAaxSeDBxibDxJID0Q",
@@ -24,7 +24,7 @@ const musicData = {
     image: "https://i.scdn.co/image/ab67616d00004851fdb65c78f71172b6bfab977f",
   },
   glbp: {
-    src: "../../src/music/glbp.mp3",
+    src: "src/music/glbp.mp3",
     song: {
       name: "ギターと孤独と蒼い惑星",
       url: "https://open.spotify.com/track/17rhDgnYYryQU4uS71ZxFu",
@@ -36,7 +36,7 @@ const musicData = {
     image: "https://i.scdn.co/image/ab67616d00001e02255ca949e450cb675edf715d",
   },
   bokurawa: {
-    src: "../../src/music/bokurawa.mp3",
+    src: "src/music/bokurawa.mp3",
     song: {
       name: "ギターと孤独と蒼い惑星",
       url: "https://open.spotify.com/track/6Y8Fs0a5ugGQXHYpULj6DG",
