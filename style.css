@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
+
+html,
+body {
+  font-family: "Orbitron";
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  background-color: #f3bbb1;
+  overflow: hidden;
+  color: white;
+  user-select: none;
+}
+
+.loading-screen {
+  font-family: "Chewy", cursive;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.loading-message {
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+#content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f3bbb1;
+}
+
+.menu {
+  color: white;
+  position: relative;
+  left: -8.5em;
+  height: 2.5em;
+  width: 7.5em;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  text-align: right;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  z-index: 99;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  user-select: none;
+  padding-right: 50px;
+}
+
+#home {
+  top: 110px;
+}
+
+#game {
+  top: 110px;
+  margin-top: 5px;
+}
+
+#music {
+  top: 110px;
+  margin-top: 5px;
+}
+
+#gallery {
+  top: 110px;
+  margin-top: 5px;
+}
+
+/* Hover effect for all menu items */
+.menu:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  left: -2%;
+}
+.menu:active {
+  background-color: #f1e5bc;
+  transform: translateY(2px);
+}
+
+.selected {
+  background: white;
+  color: black;
+  left: -8em;
+}
+
+/* Home Content PLace */
+#header {
+  color: white;
+  padding-left: 1.5%;
+  padding-right: 1.5%;
+  text-align: left;
+  position: absolute;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  border: 2px solid white;
+  transition: all 0.3s ease;
+  border-radius: 25px;
+  top: 0;
+  left: 5%;
+  width: auto;
+  min-height: 4rem;
+  height: auto;
+  font-family: "Orbitron";
+  user-select: none;
+}
+
+#header h1 {
+  font-size: 1.5rem;
+}
+
+.content2 {
+  height: calc(100vh - 12%);
+  position: relative;
+  top: 100px;
+  left: 5%;
+  width: 95%;
+  border-radius: 25px;
+  color: white;
+  padding: 20px;
+  overflow: auto;
+  z-index: 50;
+  border: 2px solid white;
+  transition: all 0.3s ease;
+}
+
+/* Gallery Content Place */
+#galleryBox {
+  width: 98%; /* Ensure this is wide enough */
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px; /*This creates a gap between images */
+  justify-content: flex-start; /* Ensure images align to the left */
+}
+
+.gallery-image {
+  width: 100%;
+  object-fit: cover;
+  height: 290px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (min-width: 720px) and (max-width: 1200px) {
+  #galleryBox {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 720px) and (min-width: 480px) {
+  #galleryBox {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) and (min-width: 320px) {
+  #galleryBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Lightbox styles */
+.lightbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.lightbox.hidden {
+  display: none;
+}
+
+.lightbox-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  border: 2px solid white;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}

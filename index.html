@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aho-baka</title>
+
+    <!-- Favicon -->
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="keywords"
+      content="aho-baka, aho baka, cyberpunk, eeb experience, anime, portfolio, profile, music, game, wuthering waves, gacha"
+    />
+
+    <meta name="author" content="aho-baka" />
+
+    <meta name="description" content="a portfolio" />
+
+    <meta property="og:title" content="aho-baka" />
+    <meta property="og:description" content="a portfolio" />
+    <meta property="og:image" content="src/images/profile.jpg" />
+    <meta property="og:url" content="https://baka-aho.github.io/portfolio/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="aho-baka" />
+    <meta name="twitter:description" content="a portfolio" />
+    <meta name="twitter:image" content="src/images/card.jpg" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chewy&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Loader Screen -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-message">
+        <p>Click to enter the page!</p>
+      </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <!-- content -->
+    <div id="content" class="content hidden">
+      <div
+        class="menu selected"
+        id="home"
+        onclick="changeContent('HOME', this)"
+      >
+        Home
+      </div>
+      <div class="menu" id="game" onclick="changeContent('GAME', this)">
+        Game
+      </div>
+      <div class="menu" id="music" onclick="changeContent('MUSIC', this)">
+        Music
+      </div>
+      <div class="menu" id="gallery" onclick="changeContent('GALLERY', this)">
+        Gallery
+      </div>
+    </div>
+
+    <!-- Header hidden initially -->
+    <header id="header" class="hidden">
+      <h1>HOME</h1>
+    </header>
+
+    <div id="homeContent" class="content2 hidden">Home</div>
+    <div id="gameContent" class="content2 hidden">Game</div>
+    <div id="musicContent" class="content2 hidden">Music</div>
+    <div id="galleryContent" class="content2 hidden">
+      <div class="gallery" id="galleryBox"></div>
+    </div>
+
+    <!-- Modal for displaying full image -->
+    <div id="lightbox" class="lightbox hidden">
+      <img class="lightbox-image" id="lightboxImage" src="" alt="Full Image" />
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
