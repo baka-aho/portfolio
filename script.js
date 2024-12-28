@@ -35,7 +35,6 @@ const musicData = {
     },
     image: "https://i.scdn.co/image/ab67616d00001e02255ca949e450cb675edf715d",
   },
-
   bokurawa: {
     src: "../../src/music/bokurawa.mp3",
     song: {
@@ -52,26 +51,28 @@ const musicData = {
 
 const musicKeys = Object.keys(musicData);
 
-function getRandomMusicFile() {
-  return Math.floor(Math.random() * musicKeys.length);
-}
-
 let currentSongIndex = -1;
 let isPlaying = false;
 
 const audioPlayer = document.getElementById("audioPlayer");
 const loadingScreen = document.getElementById("loadingScreen");
-const body = document.body;
 const content = document.getElementById("content");
 const header = document.getElementById("header");
 
 const homeContent = document.getElementById("homeContent");
 
+function getRandomMusicFile() {
+  return Math.floor(Math.random() * musicKeys.length);
+}
+
+// Dynamic Music Playing Function
 function playMusic() {
   const musicKey = musicKeys[currentSongIndex];
   const currentMusic = musicData[musicKey];
   audioPlayer.src = currentMusic.src;
-  audioPlayer.volume = 15 / 100;
+  audioPlayer.volume = 0.15; // Set volume to 15%
+
+  // Play the audio when ready
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
   });
@@ -83,8 +84,9 @@ audioPlayer.addEventListener("ended", () => {
   playMusic();
 });
 
+// Handle Loading Screen Click
 loadingScreen.addEventListener("click", () => {
-  currentSongIndex = getRandomMusicFile();
+  currentSongIndex = getRandomMusicFile(); // Get a random music
   playMusic();
 
   setTimeout(() => {
@@ -98,6 +100,7 @@ loadingScreen.addEventListener("click", () => {
   }, 500);
 });
 
+// Change Content Dynamically
 function changeContent(headerText, element) {
   const h1 = header.querySelector("h1");
   const oldText = h1.innerHTML;
@@ -132,6 +135,7 @@ function changeContent(headerText, element) {
 
   const removeInterval = setInterval(removeText, 60);
 
+  // Update menu items to reflect the current selection
   const menuItems = document.querySelectorAll(".menu");
   menuItems.forEach((item) => item.classList.remove("selected"));
   element.classList.add("selected");
