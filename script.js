@@ -149,64 +149,65 @@ function changeContent(headerText, element) {
 }
 
 //Gallery Code
-count = 26;
-mp4 = [12, 20, 21, 22, 23, 24, 25, 26]; // Array of indexes for video items (mp4 files)
-
+const count = 26;
+const pinned = [21, 12, 4];
+const mp4 = [12, 20, 21, 22, 23, 24, 25, 26]; // Array of indexes for video items
 const gallery = document.querySelector(`#galleryBox`);
 
-let loadedImagesCount = 0; // Counter for loaded images
+const createElement = (i, isVideo) => {
+  const src = isVideo ? `gallery/item${i}.mp4` : `gallery/item${i}.png`;
+  const element = isVideo
+    ? document.createElement("video")
+    : document.createElement("img");
+  element.src = src;
+  element.alt = (isVideo ? "video" : "image") + i;
+  element.classList.add("gallery-image");
+  element.style.border = "2px solid white";
+  element.loading = "Lazy";
 
-for (let i = 1; i <= count; i++) {
-  if (!mp4.includes(i)) {
-    // Check if it's not a video (not in the mp4 array)
-    const imageSrc = `gallery/item${i}.png`;
+  // Wrapper div for each image/video
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("gallery-image-wrapper");
 
-    const imgElement = document.createElement("img");
-    imgElement.alt = "image" + String(i);
-    imgElement.classList.add("gallery-image");
-    imgElement.style.border = "2px solid white";
-    imgElement.loading = "Lazy";
-    imgElement.src = imageSrc;
+  // Pin icon (added for pinned items only)
+  if (pinned.includes(i)) {
+    const pinIcon = document.createElement("div");
+    pinIcon.classList.add("pin-icon");
+    pinIcon.innerHTML = "📌"; // You can replace this with an image or SVG if needed
 
-    imgElement.addEventListener("click", () => {
-      openLightbox(imageSrc); // Open image in lightbox
-    });
+    // Add title for the hover tooltip
+    pinIcon.title = isVideo
+      ? "User pinned this video"
+      : "User pinned this image";
 
-    gallery.appendChild(imgElement);
-  } else {
-    const videoSrc = `gallery/item${i}.mp4`;
+    wrapper.appendChild(pinIcon); // Add pin icon to wrapper
+  }
 
-    const vidElement = document.createElement("video");
+  // Append the image/video element to the wrapper
+  wrapper.appendChild(element);
 
-    vidElement.src = videoSrc;
-    vidElement.alt = "video" + String(i);
-    vidElement.classList.add("gallery-video");
-    vidElement.loading = "Lazy";
-    vidElement.style.border = "2px solid white";
-
+  if (isVideo) {
     const timestamp = document.createElement("div");
     timestamp.classList.add("gallery-video-timestamp");
-
-    vidElement.addEventListener("loadedmetadata", () => {
-      const duration = vidElement.duration;
-      const totalMinutes = Math.floor(duration / 60);
-      const totalSeconds = Math.floor(duration % 60);
-
-      timestamp.textContent = `${totalMinutes}:${
-        totalSeconds < 10 ? "0" + totalSeconds : totalSeconds
-      }`;
+    element.addEventListener("loadedmetadata", () => {
+      const duration = element.duration;
+      timestamp.textContent = `${Math.floor(duration / 60)}:${String(
+        Math.floor(duration % 60)
+      ).padStart(2, "0")}`;
     });
-
-    const videoWrapper = document.createElement("div");
-    videoWrapper.classList.add("gallery-image-wrapper");
-    videoWrapper.appendChild(vidElement);
-    videoWrapper.appendChild(timestamp);
-    videoWrapper.addEventListener("click", () => {
-      openLightbox(videoSrc);
-    });
-
-    gallery.appendChild(videoWrapper);
+    wrapper.appendChild(timestamp); // Append timestamp for video items
   }
+
+  wrapper.addEventListener("click", () => openLightbox(src));
+  return wrapper;
+};
+
+pinned.forEach((i) => gallery.appendChild(createElement(i, mp4.includes(i))));
+
+// Add other items
+for (let i = 1; i <= count; i++) {
+  if (!pinned.includes(i))
+    gallery.appendChild(createElement(i, mp4.includes(i)));
 }
 
 const need = 6 - (count % 6);
@@ -280,3 +281,44 @@ document.getElementById("lightboxVid").addEventListener("click", (event) => {
     }
   }
 });
+
+// Game
+const games = {
+  wuwa: {
+    name: "Wuthering Waves",
+    src: "src/images/wuwa.jpg",
+    alt: "wuwa",
+  },
+};
+
+const gameGallery = document.getElementById("gameGallery");
+const gameItems = document.querySelectorAll(".game-item");
+
+const wuwaContent = document.getElementById("wuwa");
+const valoContent = document.getElementById("valo");
+
+gameItems.forEach((gameItem) => {
+  gameItem.addEventListener("click", () => {
+    const gameCover = gameItem.querySelector(".game-cover");
+    const gameAlt = gameCover.alt;
+
+    showContent(gameAlt);
+  });
+});
+
+function showContent(name) {
+  gameGallery.classList.add("hidden");
+  if (name === "wuwa") {
+    wuwaContent.classList.remove("hidden");
+    valoContent.classList.add("hidden");
+  } else if (name === "valo") {
+    valoContent.classList.remove("hidden");
+    wuwaContent.classList.add("hidden");
+  }
+}
+
+function closeGameContent() {
+  gameGallery.classList.remove("hidden");
+  wuwaContent.classList.add("hidden");
+  valoContent.classList.add("hidden");
+}
