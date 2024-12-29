@@ -164,6 +164,32 @@ body {
   cursor: pointer;
 }
 
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 290px;
+}
+
+.gallery-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.gallery-video-timestamp {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1001;
+}
+
 @media (min-width: 720px) and (max-width: 1200px) {
   #galleryBox {
     grid-template-columns: repeat(5, 1fr);
@@ -190,10 +216,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1000;
+  overflow: hidden;
 }
 
 .lightbox.hidden {
@@ -205,6 +232,25 @@ body {
   max-height: 90%;
   border-radius: 8px;
   border: 2px solid white;
+}
+
+.lightbox-video {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  border: 2px solid white;
+}
+
+.lightbox-video-timestamp {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1001;
 }
 
 .close {
