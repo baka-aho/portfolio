@@ -1,4 +1,28 @@
 const musicData = {
+  rust: {
+    src: "src/music/rust.mp3",
+    song: {
+      name: "Rust",
+      url: "https://open.spotify.com/track/7n6YSbstaBD94SQn03tb8N",
+    },
+    author: {
+      name: "Evan Call",
+      url: "https://open.spotify.com/artist/0nMGbTpPx4b3h5fMG9CpWJ",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e021cd127473c1065dceecb92d1",
+  },
+  ncb: {
+    src: "src/music/never_coming_back.mp3",
+    song: {
+      name: "Never Coming Back",
+      url: "https://open.spotify.com/track/3WvPn9OHnjQzwyN8Zd1xLJ",
+    },
+    author: {
+      name: "Evan Call",
+      url: "https://open.spotify.com/artist/0nMGbTpPx4b3h5fMG9CpWJ",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e021cd127473c1065dceecb92d1",
+  },
   shout_baby: {
     src: "src/music/shout_baby.mp3",
     song: {
@@ -51,7 +75,7 @@ const musicData = {
 
 const musicKeys = Object.keys(musicData);
 
-let currentSongIndex = -1;
+currentSongIndex = -1;
 let isPlaying = false;
 
 const audioPlayer = document.getElementById("audioPlayer");
@@ -68,14 +92,23 @@ function getRandomMusicFile() {
   return Math.floor(Math.random() * musicKeys.length);
 }
 
-// Dynamic Music Playing Function
+// Example usage in the playMusic function
 function playMusic() {
   const musicKey = musicKeys[currentSongIndex];
   const currentMusic = musicData[musicKey];
-  audioPlayer.src = currentMusic.src;
-  audioPlayer.volume = 0.15; // Set volume to 15%
 
-  // Play the audio when ready
+  console.log(
+    "Playing",
+    currentMusic.song.name,
+    "by",
+    currentMusic.author.name
+  );
+
+  showPopup(currentMusic.song.name, currentMusic.author.name);
+
+  audioPlayer.src = currentMusic.src;
+  audioPlayer.volume = 0.15;
+
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
   });
@@ -89,9 +122,6 @@ audioPlayer.addEventListener("ended", () => {
 
 // Handle Loading Screen Click
 loadingScreen.addEventListener("click", () => {
-  currentSongIndex = getRandomMusicFile(); // Get a random music
-  playMusic();
-
   setTimeout(() => {
     loadingScreen.style.opacity = "0";
     loadingScreen.classList.add("hidden");
@@ -101,7 +131,35 @@ loadingScreen.addEventListener("click", () => {
     header.classList.remove("hidden");
     homeContent.classList.remove("hidden");
   }, 500);
+
+  currentSongIndex = Math.floor(Math.random() * 2);
+  playMusic();
 });
+
+function showPopup(songName, authorName) {
+  const popup = document.getElementById("popup");
+  const songTitle = document.getElementById("songTitle");
+  const authorNameElement = document.getElementById("authorName");
+
+  // Set the song title and author name
+  songTitle.textContent = songName;
+  authorNameElement.textContent = authorName;
+
+  // Show the popup with animation
+
+  popup.classList.remove("hidden");
+  setTimeout(() => {
+    popup.classList.add("show"); // Trigger the show animation
+  }, 1000); // Small timeout for triggering CSS transition
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+
+    setTimeout(() => {
+      popup.classList.add("hidden");
+    }, 1000); // Small timeout for triggering CSS transition
+  }, 10000); // 3000ms = 3 seconds
+}
 
 // Change Content Dynamically
 function changeContent(headerText, element) {
@@ -149,7 +207,8 @@ function changeContent(headerText, element) {
 }
 
 //Gallery Code
-const count = 26;
+const hidden = [];
+const count = 29;
 const pinned = [21, 12, 4];
 const mp4 = [12, 20, 21, 22, 23, 24, 25, 26]; // Array of indexes for video items
 const gallery = document.querySelector(`#galleryBox`);
@@ -163,7 +222,7 @@ const createElement = (i, isVideo) => {
   element.alt = (isVideo ? "video" : "image") + i;
   element.classList.add("gallery-image");
   element.style.border = "2px solid white";
-  element.loading = "Lazy";
+  element.loading = "lazy";
 
   // Wrapper div for each image/video
   const wrapper = document.createElement("div");
@@ -202,16 +261,21 @@ const createElement = (i, isVideo) => {
   return wrapper;
 };
 
-pinned.forEach((i) => gallery.appendChild(createElement(i, mp4.includes(i))));
+// Add pinned items
+pinned.forEach((i) => {
+  if (!hidden.includes(i)) {
+    gallery.appendChild(createElement(i, mp4.includes(i)));
+  }
+});
 
 // Add other items
 for (let i = 1; i <= count; i++) {
-  if (!pinned.includes(i))
+  if (!pinned.includes(i) && !hidden.includes(i)) {
     gallery.appendChild(createElement(i, mp4.includes(i)));
+  }
 }
 
 const need = 6 - (count % 6);
-console.log(need);
 for (i = 0; i < need + 1; i++) {
   var lastImg = document.createElement("img");
   lastImg.src = "gallery/imagen.png";

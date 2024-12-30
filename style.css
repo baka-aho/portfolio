@@ -42,6 +42,39 @@ body {
   display: none !important;
 }
 
+/* Popup container */
+#popup {
+  position: fixed;
+  top: -100px; /* Initially hidden above the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  padding: 20px 20px;
+  border: 2px solid white;
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  opacity: 0; /* Initially hidden */
+  transition: top 1.5s ease, opacity 1.5s ease;
+  font-weight: 100;
+}
+
+.gray {
+  color: rgba(255, 255, 255, 0.774);
+}
+
+/* Show popup */
+#popup.show {
+  top: 20px; /* Slide down */
+  opacity: 1; /* Make visible */
+}
+
+/* Hidden state */
+#popup.hidden {
+  opacity: 0;
+  top: -100px; /* Slide back up */
+}
+
 #content {
   position: absolute;
   left: 0;
@@ -151,7 +184,7 @@ body {
 #galleryBox {
   width: 98%; /* Ensure this is wide enough */
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 10px; /*This creates a gap between images */
   justify-content: flex-start; /* Ensure images align to the left */
 }
@@ -208,19 +241,19 @@ body {
 
 @media (min-width: 720px) and (max-width: 1200px) {
   #galleryBox {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
 @media (max-width: 720px) and (min-width: 480px) {
   #galleryBox {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
 @media (max-width: 480px) and (min-width: 320px) {
   #galleryBox {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
