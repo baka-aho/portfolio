@@ -44,10 +44,9 @@ body {
 
 /* Popup container */
 #popup {
-  position: fixed;
+  position: absolute;
   top: -100px; /* Initially hidden above the screen */
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20%;
   color: white;
   padding: 20px 20px;
   border: 2px solid white;
@@ -166,10 +165,10 @@ body {
 }
 
 .content2 {
-  height: calc(100vh - 12%);
+  height: calc(100vh - 4rem-2%-100px);
   position: relative;
   top: 100px;
-  left: 5%;
+  right: 0;
   width: 95%;
   border-radius: 25px;
   color: white;
