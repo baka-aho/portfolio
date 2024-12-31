@@ -107,7 +107,7 @@ function playMusic() {
   showPopup(currentMusic.song.name, currentMusic.author.name);
 
   audioPlayer.src = currentMusic.src;
-  audioPlayer.volume = 0.15;
+  audioPlayer.volume = 1;
 
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
@@ -208,9 +208,9 @@ function changeContent(headerText, element) {
 
 //Gallery Code
 const hidden = [];
-const count = 29;
+const count = 35;
 const pinned = [21, 12, 4];
-const mp4 = [12, 20, 21, 22, 23, 24, 25, 26]; // Array of indexes for video items
+const mp4 = [12, 20, 21, 22, 23, 24, 25, 26, 30, 31, 32, 33, 34, 35]; // Array of indexes for video items
 const gallery = document.querySelector(`#galleryBox`);
 
 const createElement = (i, isVideo) => {
@@ -273,15 +273,6 @@ for (let i = 1; i <= count; i++) {
   if (!pinned.includes(i) && !hidden.includes(i)) {
     gallery.appendChild(createElement(i, mp4.includes(i)));
   }
-}
-
-const need = 6 - (count % 6);
-for (i = 0; i < need + 1; i++) {
-  var lastImg = document.createElement("img");
-  lastImg.src = "gallery/imagen.png";
-  lastImg.classList.add("gallery-image");
-  lastImg.style.height = "15px";
-  gallery.appendChild(lastImg);
 }
 
 function openLightbox(src) {

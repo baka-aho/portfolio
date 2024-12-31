@@ -3,8 +3,6 @@
 html,
 body {
   font-family: "Orbitron";
-  margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
 }
@@ -13,6 +11,13 @@ body {
   overflow: hidden;
   color: white;
   user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
 }
 
 .loading-screen {
@@ -42,10 +47,9 @@ body {
   display: none !important;
 }
 
-/* Popup container */
 #popup {
   position: fixed;
-  top: -100px; /* Initially hidden above the screen */
+  top: -100px;
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -54,7 +58,7 @@ body {
   border-radius: 20px;
   font-family: Arial, sans-serif;
   font-size: 18px;
-  opacity: 0; /* Initially hidden */
+  opacity: 0;
   transition: top 1.5s ease, opacity 1.5s ease;
   font-weight: 100;
 }
@@ -63,35 +67,32 @@ body {
   color: rgba(255, 255, 255, 0.774);
 }
 
-/* Show popup */
 #popup.show {
-  top: 20px; /* Slide down */
-  opacity: 1; /* Make visible */
+  top: 20px;
+  opacity: 1;
 }
 
-/* Hidden state */
 #popup.hidden {
   opacity: 0;
-  top: -100px; /* Slide back up */
+  top: -100px;
 }
 
 #content {
   position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #f3bbb1;
+  left: -8.5em;
+  top: calc(var(--header-height) + 60px);
+  height: auto;
+  width: auto;
+  z-index: 99;
 }
 
 .menu {
   color: white;
   position: relative;
-  left: -8.5em;
+  left: -0.2rem;
   height: 2.5em;
   width: 7.5em;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  background: #f3bbb1;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
   border-radius: 10px;
@@ -105,104 +106,103 @@ body {
   padding-right: 50px;
 }
 
-#home {
-  top: 110px;
-}
-
-#game {
-  top: 110px;
-  margin-top: 5px;
-}
-
-#music {
-  top: 110px;
-  margin-top: 5px;
-}
-
-#gallery {
-  top: 110px;
-  margin-top: 5px;
-}
-
-/* Hover effect for all menu items */
 .menu:hover {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  left: -2%;
+  transform: translateX(5rem);
 }
+
 .menu:active {
   background-color: #f1e5bc;
-  transform: translateY(2px);
 }
 
 .selected {
   background: white;
   color: black;
-  left: -8em;
+  transform: translateX(0.4rem);
 }
 
-/* Home Content PLace */
-#header {
-  color: white;
-  padding-left: 1.5%;
-  padding-right: 1.5%;
-  text-align: left;
-  position: absolute;
-  margin-top: 1%;
-  margin-bottom: 1%;
-  border: 2px solid white;
-  transition: all 0.3s ease;
-  border-radius: 25px;
+#home,
+#game,
+#music,
+#gallery {
   top: 0;
-  left: 5%;
-  width: auto;
-  min-height: 4rem;
-  height: auto;
-  font-family: "Orbitron";
-  user-select: none;
+  margin-top: 5px;
+}
+
+#header {
+  flex-shrink: 0;
+  z-index: 100;
 }
 
 #header h1 {
   font-size: 1.5rem;
 }
 
-.content2 {
-  height: calc(100vh - 12%);
-  position: relative;
-  top: 100px;
-  left: 5%;
-  width: 95%;
+:root {
+  --header-height: 4rem;
+}
+
+#header {
+  color: white;
+  padding-left: 1.5%;
+  padding-right: 1.5%;
+  text-align: left;
+  position: fixed;
+  top: 20px;
+  left: 5.4%;
+  width: auto;
+  min-height: 40px;
+  height: auto;
+  font-family: "Orbitron";
+  border: 2px solid white;
   border-radius: 25px;
+  font-size: 1.5rem;
+  z-index: 100;
+  user-select: none;
+}
+
+.content2 {
+  height: calc(100% - var(--header-height));
+  width: auto;
+  margin-top: calc(var(--header-height) + 40px);
+  position: relative;
+  left: 5.4%;
+  border-top-left-radius: 25px;
   color: white;
   padding: 20px;
-  overflow: auto;
   z-index: 50;
-  border: 2px solid white;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  box-sizing: border-box;
   transition: all 0.3s ease;
+  max-height: calc(100% - var(--header-height) - 40 px);
+  max-width: calc(100% - 5.4%);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Gallery Content Place */
+.content2::-webkit-scrollbar {
+  display: none;
+}
+
 #galleryBox {
-  width: 98%; /* Ensure this is wide enough */
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 10px; /*This creates a gap between images */
-  justify-content: flex-start; /* Ensure images align to the left */
-}
-
-.gallery-image {
   width: 100%;
-  object-fit: cover;
-  height: 290px;
-  border-radius: 8px;
-  cursor: pointer;
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  justify-content: flex-start;
 }
 
 .gallery-image-wrapper {
   position: relative;
   width: 100%;
-  height: 290px;
+  aspect-ratio: 0.95;
 }
 
+.gallery-image,
 .gallery-video {
   width: 100%;
   height: 100%;
@@ -211,20 +211,8 @@ body {
   cursor: pointer;
 }
 
-.gallery-video-timestamp {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  color: white;
-  font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 5px;
-  border-radius: 3px;
-  z-index: 1001;
-}
-
 .gallery-image {
-  position: relative; /* Ensure the image/video container can hold the pin icon */
+  position: relative;
 }
 
 .pin-icon {
@@ -239,25 +227,18 @@ body {
   z-index: 10;
 }
 
-@media (min-width: 720px) and (max-width: 1200px) {
-  #galleryBox {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
+.gallery-video-timestamp {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1001;
 }
 
-@media (max-width: 720px) and (min-width: 480px) {
-  #galleryBox {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-}
-
-@media (max-width: 480px) and (min-width: 320px) {
-  #galleryBox {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-}
-
-/* Lightbox styles */
 .lightbox {
   display: flex;
   justify-content: center;
@@ -302,15 +283,14 @@ body {
 /*Game Gallery*/
 
 #gameContent {
-  padding-top: 20px;
-  padding-left: 30px;
+  padding: 20px;
 }
 
 .gameGallery {
   width: 98%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
   justify-content: flex-start;
 }
 
@@ -319,7 +299,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   max-height: 400px;
   height: auto;
   border-radius: 8px;
@@ -383,6 +363,7 @@ body {
   cursor: pointer;
   margin-right: 10px;
   margin-left: -10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .backButton svg {
@@ -392,4 +373,25 @@ body {
 
 .backButton:hover {
   background-color: #f1e5bc;
+}
+
+@media (max-width: 1200px) {
+  #galleryBox,
+  .gameGallery {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 720px) and (min-width: 480px) {
+  #galleryBox,
+  .gameGallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 480px) and (min-width: 320px) {
+  #galleryBox,
+  .gameGallery {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
 }
