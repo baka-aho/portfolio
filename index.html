@@ -54,6 +54,22 @@
 
     <!-- content -->
     <div id="content" class="content hidden">
+      <div class="overlay"></div>
+
+      <!-- Slider in the top right corner -->
+      <div class="slider-container">
+        <label for="opacitySlider" class="slider-label">Brightness</label>
+        <input
+          type="range"
+          id="opacitySlider"
+          min="0"
+          max="1"
+          step="0.01"
+          value="1"
+          class="opacity-slider"
+        />
+      </div>
+
       <div id="popup" class="hidden">
         Playing
         <b><span id="songTitle" class="gray"></span></b>
@@ -78,12 +94,16 @@
       </div>
     </div>
 
+    <div class="floating-window" id="floatingWindow"></div>
+
     <!-- Header hidden initially -->
     <header id="header" class="hidden">
       <h1>HOME</h1>
     </header>
 
-    <div id="homeContent" class="content2 hidden">Home</div>
+    <div id="homeContent" class="content2 hidden">
+      Home - Everything is in progress
+    </div>
     <div id="gameContent" class="content2 hidden">
       <div id="gameGallery" class="gameGallery">
         <div class="game-item">
@@ -228,7 +248,28 @@
         <div class="gameHeader">Valorant</div>
       </div>
     </div>
-    <div id="musicContent" class="content2 hidden">Music</div>
+
+    <div id="musicContent" class="content2 hidden">
+      <div class="songsList"></div>
+      <div class="musicMain">
+        <div class="info">
+          <img class="musicImage" src="" />
+          <div class="infoContainer">
+            <p class="song"></p>
+            <p class="author"></p>
+          </div>
+        </div>
+
+        <div class="lyricsTab scroller" id="lyricsTab">
+          <div class="lyrics scroller">
+            <!-- Add your lyrics or content here -->
+            <p>No lyrics available</p>
+          </div>
+        </div>
+        <div class="userControl"></div>
+      </div>
+    </div>
+
     <div id="galleryContent" class="content2 hidden">
       <div class="gallery" id="galleryBox"></div>
     </div>

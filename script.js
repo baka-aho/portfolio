@@ -9,6 +9,10 @@ const musicData = {
       name: "Evan Call",
       url: "https://open.spotify.com/artist/0nMGbTpPx4b3h5fMG9CpWJ",
     },
+    alt: {
+      song: "Rust",
+      author: "Evan Call",
+    },
     image: "https://i.scdn.co/image/ab67616d00001e021cd127473c1065dceecb92d1",
   },
   ncb: {
@@ -20,6 +24,10 @@ const musicData = {
     author: {
       name: "Evan Call",
       url: "https://open.spotify.com/artist/0nMGbTpPx4b3h5fMG9CpWJ",
+    },
+    alt: {
+      song: "Never Coming Back",
+      author: "Evan Call",
     },
     image: "https://i.scdn.co/image/ab67616d00001e021cd127473c1065dceecb92d1",
   },
@@ -33,6 +41,10 @@ const musicData = {
       name: "Ryokuoushoku Shakai",
       url: "https://open.spotify.com/artist/4SJ7qRgJYNXB9Yttzs4aSa",
     },
+    alt: {
+      song: "Shout Baby",
+      author: "Ryokuoushoku Shakai",
+    },
     image: "https://i.scdn.co/image/ab67616d00001e02323b6ecc2a6e0f2410a1956a",
   },
   scream: {
@@ -44,6 +56,11 @@ const musicData = {
     author: {
       name: "P丸様｡",
       url: "https://open.spotify.com/artist/4hUWwJ0fRLx9rYtUvT26Ii",
+    },
+
+    alt: {
+      song: "Scream",
+      author: "P Maru-sama",
     },
     image: "https://i.scdn.co/image/ab67616d00004851fdb65c78f71172b6bfab977f",
   },
@@ -57,19 +74,28 @@ const musicData = {
       name: "kessoku band",
       url: "https://open.spotify.com/artist/2nvl0N9GwyX69RRBMEZ4OD",
     },
+
+    alt: {
+      song: "Guitar, Solitude, and the Blue Planet",
+      author: "kessoku band",
+    },
     image: "https://i.scdn.co/image/ab67616d00001e02255ca949e450cb675edf715d",
   },
   bokurawa: {
     src: "src/music/bokurawa.mp3",
     song: {
-      name: "ギターと孤独と蒼い惑星",
+      name: "Bokura wa Kyou mo Kuruma no Naka",
       url: "https://open.spotify.com/track/6Y8Fs0a5ugGQXHYpULj6DG",
     },
     author: {
-      name: "kessoku band",
-      url: "https://open.spotify.com/artist/2nvl0N9GwyX69RRBMEZ4OD",
+      name: "Hump Back",
+      url: "https://open.spotify.com/artist/0zgpYPDY3hFaK1DqbWgCjI",
     },
-    image: "https://i.scdn.co/image/ab67616d00001e02255ca949e450cb675edf715d",
+    alt: {
+      song: "Bokura wa Kyou mo Kuruma no Naka",
+      author: "Hump Back",
+    },
+    image: "https://i.scdn.co/image/ab67616d00001e02a1757f611ad4de77292cb1c9",
   },
 };
 
@@ -77,23 +103,54 @@ const musicKeys = Object.keys(musicData);
 
 currentSongIndex = -1;
 let isPlaying = false;
+let isPaused = false;
 
 const audioPlayer = document.getElementById("audioPlayer");
 const loadingScreen = document.getElementById("loadingScreen");
 const content = document.getElementById("content");
 const header = document.getElementById("header");
 const homeContent = document.getElementById("homeContent");
-const lightbox = document.getElementById("lightbox"); // Declare lightbox here
+const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const lightboxVid = document.getElementById("lightboxVid");
 const lightboxT = document.getElementById("lightboxT");
+
+const lyricsContent = document.querySelector("#lyricsTab .lyrics");
+const musicImage = document.querySelector(".musicImage");
+const infoContainer = document.querySelector(".infoContainer");
+const floatingWindow = document.getElementById("floatingWindow");
 
 function getRandomMusicFile() {
   return Math.floor(Math.random() * musicKeys.length);
 }
 
-// Example usage in the playMusic function
+let isShuffleEnabled = false;
+let playedSongs = [];
+
+function toggleShuffle() {
+  isShuffleEnabled = !isShuffleEnabled;
+  playedSongs = [];
+  console.log("Shuffle mode:", isShuffleEnabled ? "Enabled" : "Disabled");
+}
+
+function getRandomUnplayedSongIndex() {
+  if (playedSongs.length === musicKeys.length) {
+    playedSongs = [];
+  }
+
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * musicKeys.length);
+  } while (playedSongs.includes(randomIndex));
+
+  playedSongs.push(randomIndex);
+  return randomIndex;
+}
+
 function playMusic() {
+  if (isShuffleEnabled) {
+    currentSongIndex = getRandomUnplayedSongIndex();
+  }
   const musicKey = musicKeys[currentSongIndex];
   const currentMusic = musicData[musicKey];
 
@@ -106,8 +163,43 @@ function playMusic() {
 
   showPopup(currentMusic.song.name, currentMusic.author.name);
 
+  // Fetch the lyrics using the musicKey
+  const lyricsFilePath = `src/lyrics/romaji/${musicKey}.txt`;
+
+  fetch(lyricsFilePath)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text();
+    })
+    .then((lyrics) => {
+      const formattedLyrics = lyrics.replace(/\n/g, "<br>");
+      lyricsContent.innerHTML = formattedLyrics; //
+    })
+    .catch((error) => {
+      lyricsContent.textContent = "No lyrics available";
+    });
+
+  musicImage.src = currentMusic.image;
+  musicImage.title = `${currentMusic.song.name} by ${currentMusic.author.name}`;
+
+  const paragraphs = infoContainer.querySelectorAll("p");
+  paragraphs[0].innerHTML = `<a href="${currentMusic.song.url}" target="_blank" title="${currentMusic.alt.song}" class="song-link">${currentMusic.song.name}</a>`;
+
+  // Update author paragraph with a hyperlink
+  paragraphs[1].innerHTML = `<a href="${currentMusic.author.url}" target="_blank" title="${currentMusic.alt.author}" class="author-link">${currentMusic.author.name}</a>`;
+
   audioPlayer.src = currentMusic.src;
-  audioPlayer.volume = 1;
+  audioPlayer.volume = 0.15;
+
+  const songImages = document.querySelectorAll(
+    `img[alt="${currentMusic.song.name}"]`
+  );
+
+  songImages.forEach((image) => {
+    image.classList.add("rotating");
+  });
 
   audioPlayer.play().catch((error) => {
     console.error("Error playing music:", error);
@@ -116,9 +208,41 @@ function playMusic() {
 }
 
 audioPlayer.addEventListener("ended", () => {
+  const songImages = document.querySelectorAll(
+    `img[alt="${musicData[musicKeys[currentSongIndex]].song.name}"]`
+  );
+
+  songImages.forEach((image) => {
+    image.classList.remove("rotating");
+  });
+
   currentSongIndex = (currentSongIndex + 1) % musicKeys.length;
   playMusic();
 });
+
+function pauseMusic() {
+  audioPlayer.pause();
+  isPlaying = false;
+  isPaused = true;
+}
+
+function resumeMusic() {
+  audioPlayer.play().catch((error) => {
+    console.error("Error playing music:", error);
+  });
+  isPlaying = true;
+  isPaused = false;
+}
+
+function nextMusic() {
+  currentSongIndex = (currentSongIndex + 1) % musicKeys.length;
+  playMusic();
+}
+
+function previousMusic() {
+  currentSongIndex = (currentSongIndex - 1) % musicKeys.length;
+  playMusic();
+}
 
 // Handle Loading Screen Click
 loadingScreen.addEventListener("click", () => {
@@ -132,7 +256,7 @@ loadingScreen.addEventListener("click", () => {
     homeContent.classList.remove("hidden");
   }, 500);
 
-  currentSongIndex = Math.floor(Math.random() * 2);
+  currentSongIndex = Math.floor(Math.random() * musicKeys.length);
   playMusic();
 });
 
@@ -141,24 +265,21 @@ function showPopup(songName, authorName) {
   const songTitle = document.getElementById("songTitle");
   const authorNameElement = document.getElementById("authorName");
 
-  // Set the song title and author name
   songTitle.textContent = songName;
   authorNameElement.textContent = authorName;
 
-  // Show the popup with animation
-
   popup.classList.remove("hidden");
   setTimeout(() => {
-    popup.classList.add("show"); // Trigger the show animation
-  }, 1000); // Small timeout for triggering CSS transition
+    popup.classList.add("show");
+  }, 1000);
 
   setTimeout(() => {
     popup.classList.remove("show");
 
     setTimeout(() => {
       popup.classList.add("hidden");
-    }, 1000); // Small timeout for triggering CSS transition
-  }, 10000); // 3000ms = 3 seconds
+    }, 1000);
+  }, 10000);
 }
 
 // Change Content Dynamically
@@ -180,7 +301,6 @@ function changeContent(headerText, element) {
     }
   };
 
-  // Function to type new text
   const typeNewText = () => {
     let newIndex = 0;
     const typeInterval = setInterval(() => {
@@ -191,12 +311,11 @@ function changeContent(headerText, element) {
       } else {
         clearInterval(typeInterval);
       }
-    }, 100); // Adjust typing speed here
+    }, 100);
   };
 
   const removeInterval = setInterval(removeText, 60);
 
-  // Update menu items to reflect the current selection
   const menuItems = document.querySelectorAll(".menu");
   menuItems.forEach((item) => item.classList.remove("selected"));
   element.classList.add("selected");
@@ -204,13 +323,19 @@ function changeContent(headerText, element) {
   const contents = document.querySelectorAll(".content2");
   contents.forEach((item) => item.classList.add("hidden"));
   document.querySelector(`#${element.id}Content`).classList.remove("hidden");
+
+  if (element.id == "music") {
+    floatingWindow.classList.add("hidden");
+  } else {
+    floatingWindow.classList.remove("hidden");
+  }
 }
 
 //Gallery Code
 const hidden = [];
 const count = 35;
 const pinned = [21, 12, 4];
-const mp4 = [12, 20, 21, 22, 23, 24, 25, 26, 30, 31, 32, 33, 34, 35]; // Array of indexes for video items
+const mp4 = [12, 20, 21, 22, 23, 24, 25, 26, 30, 31, 32, 33, 34, 35];
 const gallery = document.querySelector(`#galleryBox`);
 
 const createElement = (i, isVideo) => {
@@ -224,7 +349,6 @@ const createElement = (i, isVideo) => {
   element.style.border = "2px solid white";
   element.loading = "lazy";
 
-  // Wrapper div for each image/video
   const wrapper = document.createElement("div");
   wrapper.classList.add("gallery-image-wrapper");
 
@@ -232,14 +356,13 @@ const createElement = (i, isVideo) => {
   if (pinned.includes(i)) {
     const pinIcon = document.createElement("div");
     pinIcon.classList.add("pin-icon");
-    pinIcon.innerHTML = "📌"; // You can replace this with an image or SVG if needed
+    pinIcon.innerHTML = "📌";
 
-    // Add title for the hover tooltip
     pinIcon.title = isVideo
       ? "User pinned this video"
       : "User pinned this image";
 
-    wrapper.appendChild(pinIcon); // Add pin icon to wrapper
+    wrapper.appendChild(pinIcon);
   }
 
   // Append the image/video element to the wrapper
@@ -254,7 +377,7 @@ const createElement = (i, isVideo) => {
         Math.floor(duration % 60)
       ).padStart(2, "0")}`;
     });
-    wrapper.appendChild(timestamp); // Append timestamp for video items
+    wrapper.appendChild(timestamp);
   }
 
   wrapper.addEventListener("click", () => openLightbox(src));
@@ -377,3 +500,96 @@ function closeGameContent() {
   wuwaContent.classList.add("hidden");
   valoContent.classList.add("hidden");
 }
+
+const slider = document.getElementById("opacitySlider");
+const overlay = document.querySelector(".overlay");
+
+overlay.style.opacity = 0;
+
+slider.addEventListener("input", (event) => {
+  overlay.style.opacity = 1 - event.target.value;
+});
+
+// Function to populate the song list
+function populateSongList() {
+  const songsListDiv = document.querySelector("#musicContent .songsList");
+
+  musicKeys.forEach((key) => {
+    const currentMusic = musicData[key];
+
+    const songItem = document.createElement("div");
+    songItem.classList.add("songItem");
+
+    const songImage = document.createElement("img");
+    songImage.src = currentMusic.image;
+    songImage.alt = currentMusic.song.name;
+    songImage.classList.add("songImage");
+    songItem.appendChild(songImage);
+
+    const textContainer = document.createElement("div");
+    textContainer.classList.add("textContainer");
+
+    const songTitle = document.createElement("p");
+    songTitle.textContent = currentMusic.song.name;
+    songTitle.title = currentMusic.alt.song;
+    songTitle.classList.add("songTitle");
+    textContainer.appendChild(songTitle);
+
+    const authorName = document.createElement("p");
+    authorName.textContent = currentMusic.author.name;
+    authorName.title = currentMusic.alt.author;
+    authorName.classList.add("authorName");
+    textContainer.appendChild(authorName);
+
+    songItem.appendChild(textContainer);
+
+    songsListDiv.appendChild(songItem);
+
+    songItem.addEventListener("click", () => {
+      const songImages = document.querySelectorAll(
+        `img[alt="${musicData[musicKeys[currentSongIndex]].song.name}"]`
+      );
+
+      songImages.forEach((image) => {
+        image.classList.remove("rotating");
+      });
+      currentSongIndex = musicKeys.indexOf(key);
+      playMusic();
+    });
+  });
+}
+
+populateSongList();
+
+// const shuffleCheckbox = document.getElementById("shuffleCheckbox");
+
+// shuffleCheckbox.addEventListener("change", (event) => {
+//   shuffleEnabled = event.target.checked;
+//   playedSongs = [];
+// });
+
+const lyricsTab = document.getElementById("lyricsTab");
+
+lyricsTab.addEventListener("click", function () {
+  lyricsTab.classList.toggle("expanded");
+});
+
+let isDragging = false;
+let offsetX, offsetY;
+
+floatingWindow.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  offsetX = e.offsetX;
+  offsetY = e.offsetY;
+});
+
+window.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    floatingWindow.style.left = `${e.clientX - offsetX}px`;
+    floatingWindow.style.top = `${e.clientY - offsetY}px`;
+  }
+});
+
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+});
